@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+    <title>Rock,Scissors,Paper</title>
+</head>
+<body>
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+        let numOfDraw = 0;
+
+        function computerPlay() {
+            let choice = ["ROCK", "SCISSORS", "PAPER"];
+            let randomness = Math.floor(Math.random() * 3);
+            return choice[randomness]
+        }
+
+        function playRound(playerSelection, computerSelection) {
+            if (playerSelection != "PAPER" &&
+                playerSelection != "SCISSORS" && 
+                playerSelection != "ROCK") {
+                return "Please enter the correct input."
+            }
+            
+            else if (playerSelection == computerSelection) {
+                numOfDraw++;
+                return "It is a draw."
+            }
+
+            else if ((playerSelection == "ROCK" && computerSelection == "SCISSORS") ||
+                    (playerSelection == "SCISSORS" && computerSelection == "PAPER") ||
+                    (playerSelection == "PAPER" && computerSelection == "ROCK")) {
+                        playerScore++;
+                        return "You Win! " + playerSelection + " beats " + computerSelection
+                    }
+
+            else {
+                computerScore++;
+                return "You lose! " + computerSelection + " beats " + playerSelection
+            }
+        }
+
+        function game() {
+            while (playerScore + computerScore != 5) {
+                let playerSelection = prompt("Rock, Scissors or Paper");
+                playerSelection = playerSelection.toUpperCase();
+                let computerSelection = computerPlay();
+                alert(playRound(playerSelection, computerSelection));
+            }
+
+            if (playerScore > computerScore) {
+                alert("You win by " + playerScore + "-" + computerScore + ".")
+            }
+
+            else {
+                alert("You lose by " + playerScore + "-" + computerScore + ".")
+            }
+            
+            playerScore = 0;
+            computerScore = 0;
+        }
+        </script>
+
+        <button onclick="game()">Start!</button>
+</body>
