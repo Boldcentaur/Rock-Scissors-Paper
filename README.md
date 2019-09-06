@@ -1,0 +1,1 @@
+This is a simple rock-scissors-paper game with JS code.
