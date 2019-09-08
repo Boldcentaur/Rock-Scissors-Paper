@@ -1,64 +1,116 @@
 <!DOCTYPE html>
 <head>
     <title>Rock,Scissors,Paper</title>
+    <link rel="stylesheet" href="rock-scissors-paper.css">
 </head>
-<body>
+
+<body onload="game()">
+    <div>
+        <button class="btn" id="btn1">Scissors</button>
+        <button class="btn" id="btn2">Rock</button>
+        <button class="btn" id="btn3">Paper</button>
+    </div>
+    <div>
+        <div class="score">Player Score: <span id="pscore"></span></div>
+        <div class="score">Computer Score: <span id="cscore"></span></div>
+    </div>
+    <div>
+        <h1 id="result"></h1>
+    </div>
+    <div>
+        <button id="restart">Replay</button>
+    </div>
+
     <script>
         let playerScore = 0;
         let computerScore = 0;
         let numOfDraw = 0;
 
+        function restart() {
+            window.location.reload(false);
+        }
+        
         function computerPlay() {
             let choice = ["ROCK", "SCISSORS", "PAPER"];
             let randomness = Math.floor(Math.random() * 3);
             return choice[randomness]
         }
-
+    
         function playRound(playerSelection, computerSelection) {
-            if (playerSelection != "PAPER" &&
-                playerSelection != "SCISSORS" && 
-                playerSelection != "ROCK") {
-                return "Please enter the correct input."
-            }
-            
-            else if (playerSelection == computerSelection) {
+            if (playerSelection == computerSelection) {
                 numOfDraw++;
                 return "It is a draw."
             }
-
+    
             else if ((playerSelection == "ROCK" && computerSelection == "SCISSORS") ||
-                    (playerSelection == "SCISSORS" && computerSelection == "PAPER") ||
-                    (playerSelection == "PAPER" && computerSelection == "ROCK")) {
-                        playerScore++;
-                        return "You Win! " + playerSelection + " beats " + computerSelection
-                    }
-
+                (playerSelection == "SCISSORS" && computerSelection == "PAPER") ||
+                (playerSelection == "PAPER" && computerSelection == "ROCK")) {
+                    playerScore++;
+                    return "You Win! " + playerSelection + " beats " + computerSelection
+                }
+    
             else {
                 computerScore++;
                 return "You lose! " + computerSelection + " beats " + playerSelection
             }
         }
-
+    
         function game() {
-            while (playerScore + computerScore != 5) {
-                let playerSelection = prompt("Rock, Scissors or Paper");
-                playerSelection = playerSelection.toUpperCase();
-                let computerSelection = computerPlay();
-                alert(playRound(playerSelection, computerSelection));
-            }
+            document.getElementById("restart").style.display = "none";
+            score();
+            var btn1 = document.querySelector('#btn1');
+            btn1.addEventListener('click', () => {
+                playerSelection = "SCISSORS";
+                alert(playRound(playerSelection, computerPlay()));
+                score();
+                checkWinner();
+                });
+            var btn2 = document.querySelector('#btn2');
+            btn2.addEventListener('click', () => {
+                playerSelection = "ROCK";
+                alert(playRound(playerSelection, computerPlay()));
+                score();
+                checkWinner();
+            });
+            var btn3 = document.querySelector('#btn3');
+            btn3.addEventListener('click', () => {
+                playerSelection = "PAPER";
+                alert(playRound(playerSelection, computerPlay()));
+                score();
+                checkWinner();
+            });
 
-            if (playerScore > computerScore) {
-                alert("You win by " + playerScore + "-" + computerScore + ".")
-            }
-
-            else {
-                alert("You lose by " + playerScore + "-" + computerScore + ".")
-            }
-            
-            playerScore = 0;
-            computerScore = 0;
+            var btn4 = document.querySelector("#restart");
+            btn4.addEventListener('click', () => {
+                restart();
+            })
         }
-        </script>
 
-        <button onclick="game()">Start!</button>
+        function score() {
+            document.getElementById("pscore").innerHTML = playerScore;
+            document.getElementById("cscore").innerHTML = computerScore;
+        }
+
+        function checkWinner() {
+            if (playerScore == 5) {
+                document.getElementById("result").innerHTML = "You win the game!"
+                end();
+            }
+
+            if (computerScore == 5) {
+                document.getElementById("result").innerHTML = "You lost the game!"
+                document.getElementById("restart").style.display = "block";
+                end();
+                }
+        }
+
+        function end() {
+            document.getElementById("restart").style.display = "block";
+            document.getElementById("btn1").disabled = true;
+            document.getElementById("btn2").disabled = true;
+            document.getElementById("btn3").disabled = true;
+        }
+
+
+    </script>
 </body>
